@@ -1,0 +1,5 @@
+*.pem
+
+*.log
+build.sh
+install.sh
