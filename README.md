@@ -42,11 +42,11 @@ yakv exposes a HTTP/HTTPS API and provides 3 methods to deal with data:
 - **GET**:
     - On a HTTPS server without certificate:
     ```
-    curl -X GET --header "Content-Type: application/json" -d '{"key": "yakv"}' http://127.0.0.1:8080/yakv/v0/get --insecure
+    curl -X GET --header "Content-Type: application/json" -d '{"key": "yakv"}' http://0.0.0.0:8080/yakv/v0/get --insecure
     ```
     - On a HTTP server:
     ```
-    curl -X GET --header "Content-Type: application/json" -d '{"key": "yakv"}' http://127.0.0.1:8080/yakv/v0/get
+    curl -X GET --header "Content-Type: application/json" -d '{"key": "yakv"}' http://0.0.0.0:8080/yakv/v0/get
     ```
 - **PUT**:
     - On a HTTPS server without certificate:
@@ -95,7 +95,7 @@ OPTIONS:
 
 ## Transaction Log:
 
-All of the transactions are backed up in a transaction log, which are automically loaded up by yakv on start-up.
+All of the transactions are backed up in a transaction log, which are automatically loaded up by yakv on start-up.
 
 ## Security:
 
@@ -104,3 +104,25 @@ yakv provides a TLS-encrypted HTTPS connection using the `-secure` flag.
 A certificate and a matching private key for the server must be provided through the `-cert` and `-key` flags respectively.
 
 If the flags are not provided, yakv assumes the certificate and key to be named as `cert.pem` and `key.pem` in the current directory.
+
+Example:
+
+**On Docker:**
+
+```
+docker run -p 8080:8080 yakv /bin/sh -c "/yakv -host 0.0.0.0 -secure tls"
+```
+
+**Locally:**
+- From source code:
+    ```
+    go run main.go -port 8080 -secure tls
+    ```
+- From binary:
+    ```
+    ./yakv -port 8080 -secure tls
+    ```
+
+## Attributions:
+
+The yak vector is provided by [OpenClipart/FreeSVG](https://freesvg.org/vector-drawing-of-a-yak) under the [Public Domain](https://creativecommons.org/licenses/publicdomain/).
