@@ -1,0 +1,21 @@
+# Workflow for running tests
+
+on: [push, pull_request]
+name: Tests
+jobs:
+  test:
+    strategy:
+      matrix:
+        # Tested on only go-1.16.x
+        go-version: [1.16.x]
+        # Currently only Ubuntu, might extend to Windows/Mac in the future.
+        # os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Install Go.
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go-version }}
+    - name: Run tests.
+      run: go test ./...
