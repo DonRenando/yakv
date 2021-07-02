@@ -19,6 +19,15 @@ func checkFileExists(filename string) bool {
 	return !fileInfo.IsDir()
 }
 
+// Helper function for checking if the current ID is equal to the logger's last ID.
+func checkLastID(t *testing.T, tl TransactionLogger, id uint64) {
+	if lastID := tl.LastID(); lastID != id {
+		t.Errorf("Got unexpected sequence. Expected %d, got %d", id, lastID)
+	} else {
+		t.Logf("Got expected sequence. Expected %d, got %d", id, lastID)
+	}
+}
+
 // Function for testing Get operation.
 func TestGet(t *testing.T) {
 	// Sample data
@@ -128,58 +137,115 @@ func TestDelete(t *testing.T) {
 	}
 }
 
+// Function for testing the creation of a transaction log.
 func TestInitLogger(t *testing.T) {
+	// Temporary log filename.
 	const filename = "temp-transaction.log"
 
 	// Restore to original state after test.
 	defer os.Remove(filename)
 
+	// Create a new file logger.
 	ftl, err := NewFileTransactionLogger(filename)
 	if err != nil {
 		t.Errorf("Error: %w", err)
 	}
 
+	// Check whether a logger was returned from the function.
 	if ftl == nil {
 		t.Error("No logger was returned from NewFileTransactionLogger()")
 	}
 
+	// Check whether the file exists or not.
 	if !checkFileExists(filename) {
 		t.Errorf("File \"%s\" doesn't exist.", filename)
 	}
 }
 
+// Function for testing if IDs are sequentially logged.
 func TestIDs(t *testing.T) {
+	// Temporary log filename.
 	const filename = "temp-IDs.log"
 
+	// Restore to original state after test.
 	defer os.Remove(filename)
 
+	// Create a new file logger.
 	transactionLogger, err := NewFileTransactionLogger(filename)
 	if err != nil {
 		t.Error(err)
 	}
 
+	// Start logging.
 	transactionLogger.Log()
+
+	// Close file once tests are done.
 	defer transactionLogger.Close()
 
+	// Check expected last ID.
 	checkLastID(t, transactionLogger, 0)
 
+	// Send events to the logger.
 	transactionLogger.WritePut("yakv", "yak1")
 	transactionLogger.WritePut("yakv2", "yak2")
 	transactionLogger.Wait()
 
+	// Check expected last ID after WritePut.
 	checkLastID(t, transactionLogger, 2)
 
+	// Send events to the logger.
 	transactionLogger.WritePut("yakv3", "yak3")
 	transactionLogger.WritePut("yakv4", "yak4")
 	transactionLogger.Wait()
 
+	// Check expected last ID after WritePut.
 	checkLastID(t, transactionLogger, 4)
 }
 
-func checkLastID(t *testing.T, tl TransactionLogger, id uint64) {
-	if lastID := tl.LastID(); lastID != id {
-		t.Errorf("Got unexpected sequence. Expected %d, got %d", id, lastID)
-	} else {
-		t.Logf("Got expected sequence. Expected %d, got %d", id, lastID)
+// Function for testing WritePut.
+func TestWritePut(t *testing.T) {
+	// Temporary log filename.
+	const filename = "temp-writeput.log"
+
+	// Restore to original state after test.
+	defer os.Remove(filename)
+
+	// Create a new file logger.
+	transactionLogger, _ := NewFileTransactionLogger(filename)
+
+	// Start logging.
+	transactionLogger.Log()
+
+	// Close file once tests are done.
+	defer transactionLogger.Close()
+
+	// Send events to the logger.
+	transactionLogger.WritePut("yakv1", "yak1")
+	transactionLogger.WritePut("yakv2", "yak2")
+	transactionLogger.Wait()
+
+	// Create a new file logger.
+	transactionLogger2, _ := NewFileTransactionLogger(filename)
+
+	// Read events and errors.
+	inEvents, inErrors := transactionLogger2.ReadEvents()
+
+	// Close file once tests are done.
+	defer transactionLogger2.Close()
+
+	// Log events to the console.
+	for e := range inEvents {
+		t.Log(e)
+	}
+
+	// Print error to the console.
+	err := <-inErrors
+	if err != nil {
+		t.Error(err)
+	}
+
+	// Check if both loggers have the same last ID.
+	if transactionLogger.LastID() != transactionLogger2.LastID() {
+		t.Errorf("IDs are not matching: %d != %d", transactionLogger.LastID(), transactionLogger2.LastID())
 	}
 }
