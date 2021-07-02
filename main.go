@@ -44,7 +44,7 @@ var ftlReadFormat = "%d\t%d\t%q\t%q"
 var logger TransactionLogger
 
 // This error is raised when a key is not found in the store.
-var ErrorNoSuchKey = errors.New("Key doesn't exist!")
+var ErrorNoSuchKey = errors.New("key doesn't exist")
 
 // The interface for a transaction logger.
 type TransactionLogger interface {
@@ -172,7 +172,7 @@ func DecodeJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) err
 			return &malformedRequest{status: http.StatusBadRequest, msg: msg}
 
 		case errors.Is(err, io.ErrUnexpectedEOF):
-			msg := fmt.Sprintf("Request body contains badly-formed JSON")
+			msg := "Request body contains badly-formed JSON"
 			return &malformedRequest{status: http.StatusBadRequest, msg: msg}
 
 		case errors.As(err, &unmarshalTypeError):
@@ -419,13 +419,13 @@ func (ftl *FileTransactionLogger) ReadEvents() (<-chan Event, <-chan error) {
 
 			// Scans the transaction from the log.
 			if _, err := fmt.Sscanf(line, ftlReadFormat, &e.ID, &e.EventType, &e.Key, &e.Value); err != nil {
-				outError <- fmt.Errorf("Failed while parsing input. %w", err)
+				outError <- fmt.Errorf("failed while parsing input. %w", err)
 				return
 			}
 
 			// Checks for seqeuence. Abnormal sequences are not suitable for replaying transactions.
 			if ftl.lastID >= e.ID {
-				outError <- fmt.Errorf("Transaction IDs out of sequence.")
+				outError <- fmt.Errorf("transaction IDs out of sequence. %d != %d", ftl.lastID, e.ID)
 				return
 			}
 
@@ -438,7 +438,7 @@ func (ftl *FileTransactionLogger) ReadEvents() (<-chan Event, <-chan error) {
 
 		// Send any error to the outError channel.
 		if err := scanner.Err(); err != nil {
-			outError <- fmt.Errorf("Failed reading transaction log. %w", err)
+			outError <- fmt.Errorf("failed reading transaction log. %w", err)
 			return
 		}
 	}()
@@ -451,7 +451,7 @@ func NewFileTransactionLogger(filename string) (TransactionLogger, error) {
 	file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0755)
 
 	if err != nil {
-		return nil, fmt.Errorf("Failure: Failed to read transaction log file. %w", err)
+		return nil, fmt.Errorf("failed to read transaction log file. %w", err)
 	}
 
 	return &FileTransactionLogger{file: file, wg: &sync.WaitGroup{}}, nil
@@ -464,7 +464,7 @@ func InitLog(filename string) error {
 	// Filename for logs is "transaction.log" by default.
 	logger, err = NewFileTransactionLogger(filename)
 	if err != nil {
-		return fmt.Errorf("Failed to create logger! %w", err)
+		return fmt.Errorf("failed to create logger! %w", err)
 	}
 
 	// Reads all events and errors.
