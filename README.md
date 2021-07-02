@@ -11,7 +11,12 @@ yakv is designed with simplicity as the main purpose and has *almost zero extern
 
 ## Installation:
 
-Spin up a server using:
+Install using:
+
+- **One-Script Installation (Linux):**
+    ```
+    curl https://raw.githubusercontent.com/burntcarrot/yakv/main/install.sh | bash
+    ```
 
 - **Docker**:
     ```
@@ -42,7 +47,7 @@ yakv exposes a HTTP/HTTPS API and provides 3 methods to deal with data:
 - **GET**:
     - On a HTTPS server without certificate:
     ```
-    curl -X GET --header "Content-Type: application/json" -d '{"key": "yakv"}' http://0.0.0.0:8080/yakv/v0/get --insecure
+    curl -X GET --header "Content-Type: application/json" -d '{"key": "yakv"}' https://0.0.0.0:8080/yakv/v0/get --insecure
     ```
     - On a HTTP server:
     ```
@@ -51,7 +56,7 @@ yakv exposes a HTTP/HTTPS API and provides 3 methods to deal with data:
 - **PUT**:
     - On a HTTPS server without certificate:
     ```
-    curl -X PUT --header "Content-Type: application/json" -d '{"key": "yakv", "value": "Hello, yakv!"}' http://0.0.0.0:8080/yakv/v0/put --insecure
+    curl -X PUT --header "Content-Type: application/json" -d '{"key": "yakv", "value": "Hello, yakv!"}' https://0.0.0.0:8080/yakv/v0/put --insecure
     ```
     - On a HTTP server:
     ```
@@ -60,7 +65,7 @@ yakv exposes a HTTP/HTTPS API and provides 3 methods to deal with data:
 - **DELETE**:
     - On a HTTPS server without certificate:
     ```
-    curl -X DELETE --header "Content-Type: application/json" -d '{"key": "yakv"}' http://0.0.0.0:8080/yakv/v0/delete --insecure
+    curl -X DELETE --header "Content-Type: application/json" -d '{"key": "yakv"}' https://0.0.0.0:8080/yakv/v0/delete --insecure
     ```
     - On a HTTP server:
     ```

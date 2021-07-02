@@ -1,5 +1,5 @@
 *.pem
-
 *.log
+build/
 build.sh
-install.sh
+# install.sh
