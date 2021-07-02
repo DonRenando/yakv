@@ -3,4 +3,5 @@
 build/
 build.sh
 # install.sh
-*_test.go
+# *_test.go
+yakv

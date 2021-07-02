@@ -128,6 +128,23 @@ docker run -p 8080:8080 yakv /bin/sh -c "/yakv -host 0.0.0.0 -secure tls"
     ./yakv -port 8080 -secure tls
     ```
 
+## Benchmarks:
+
+**5,000 PUT requests in 100 seconds *(50 requests/second)***:
+
+```
+Requests      [total, rate, throughput]         5000, 50.01, 50.01
+Duration      [total, attack, wait]             1m40s, 1m40s, 1.13ms
+Latencies     [min, mean, 50, 90, 95, 99, max]  467.4µs, 2.687ms, 2.949ms, 3.579ms, 3.652ms, 3.723ms, 14.932ms
+Bytes In      [total, mean]                     0, 0.00
+Bytes Out     [total, mean]                     185000, 37.00
+Success       [ratio]                           100.00%
+Status Codes  [code:count]                      201:5000
+Error Set:
+```
+
+![PUT-Benchmark](benchmarks/put-requests-100s.png)
+
 ## Attributions:
 
 The yak vector is provided by [OpenClipart/FreeSVG](https://freesvg.org/vector-drawing-of-a-yak) under the [Public Domain](https://creativecommons.org/licenses/publicdomain/).
