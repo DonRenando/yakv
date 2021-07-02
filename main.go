@@ -50,7 +50,10 @@ var ErrorNoSuchKey = errors.New("Key doesn't exist!")
 type TransactionLogger interface {
 	WriteDelete(key string)
 	WritePut(key, value string)
+	Close() error
+	Wait()
 	Err() <-chan error
+	LastID() uint64
 	ReadEvents() (<-chan Event, <-chan error)
 	Log()
 }
@@ -61,6 +64,7 @@ type FileTransactionLogger struct {
 	errors <-chan error // Read-only channel for receiving errors.
 	lastID uint64       // Last used event ID.
 	file   *os.File     // Path for the transaction log.
+	wg     *sync.WaitGroup
 }
 
 // Event holds the basic information for an event.
@@ -335,17 +339,37 @@ func PutHandler(rw http.ResponseWriter, r *http.Request) {
 
 // Sends events of type EventPut to the file-based transaction logger's events channel.
 func (ftl *FileTransactionLogger) WritePut(key, value string) {
+	ftl.wg.Add(1)
 	ftl.events <- Event{EventType: EventPut, Key: key, Value: value}
 }
 
 // Sends events of type EventDelete to the file-based transaction logger's events channel.
 func (ftl *FileTransactionLogger) WriteDelete(key string) {
+	ftl.wg.Add(1)
 	ftl.events <- Event{EventType: EventDelete, Key: key}
+}
+
+func (ftl *FileTransactionLogger) Close() error {
+	ftl.wg.Wait()
+
+	if ftl.events != nil {
+		close(ftl.events)
+	}
+
+	return ftl.file.Close()
+}
+
+func (ftl *FileTransactionLogger) Wait() {
+	ftl.wg.Wait()
 }
 
 // Sends errors to the file-based transaction logger's errors channel
 func (ftl *FileTransactionLogger) Err() <-chan error {
 	return ftl.errors
+}
+
+func (ftl *FileTransactionLogger) LastID() uint64 {
+	return ftl.lastID
 }
 
 // Logs transactions to the transaction log.
@@ -369,8 +393,10 @@ func (ftl *FileTransactionLogger) Log() {
 			if err != nil {
 				// Send the error to errors channel.
 				errors <- err
-				return
+				// return
 			}
+
+			ftl.wg.Done()
 		}
 	}()
 }
@@ -428,7 +454,7 @@ func NewFileTransactionLogger(filename string) (TransactionLogger, error) {
 		return nil, fmt.Errorf("Failure: Failed to read transaction log file. %w", err)
 	}
 
-	return &FileTransactionLogger{file: file}, nil
+	return &FileTransactionLogger{file: file, wg: &sync.WaitGroup{}}, nil
 }
 
 // Initialize the transaction log and mutates the state of the key-value store by replaying previously stored transactions.
