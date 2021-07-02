@@ -130,7 +130,9 @@ docker run -p 8080:8080 yakv /bin/sh -c "/yakv -host 0.0.0.0 -secure tls"
 
 ## Benchmarks:
 
-**5,000 PUT requests in 100 seconds *(50 requests/second)***:
+**NOTE: rate is set manually. This does not denote the maximum number of requests yakv can handle.**
+
+**5,000 PUT requests in 100 seconds *(rate = 50 requests/second)***:
 
 ```
 Requests      [total, rate, throughput]         5000, 50.01, 50.01
