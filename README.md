@@ -130,9 +130,24 @@ docker run -p 8080:8080 yakv /bin/sh -c "/yakv -host 0.0.0.0 -secure tls"
 
 ## Benchmarks:
 
-**NOTE: rate is set manually. This does not denote the maximum number of requests yakv can handle.**
+All of the benchmarks are performed under these device specifications:
 
-**5,000 PUT requests in 100 seconds *(rate = 50 requests/second)***:
+```
+Processor:
+Intel(R) Core(TM) i5-8265U CPU @ 1.60GHz   1.80 GHz
+
+Installed RAM:
+8.00 GB (7.85 GB usable)
+
+System type:
+64-bit operating system, x64-based processor
+```
+
+> **NOTE: rate is set manually. This does not denote the maximum number of requests yakv can handle.**
+
+### 5,000 PUT requests in 100 seconds *(rate = 50 requests/second)*:
+
+*Available RAM while performing benchmark: `3.8 GB`*
 
 ```
 Requests      [total, rate, throughput]         5000, 50.01, 50.01
