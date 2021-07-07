@@ -1,6 +1,7 @@
 <div align="center">
     <img src = "yakv.png">
     <br>
+    <a href="http://makeapullrequest.com"><img src ="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square"></a>
 </div>
 
 yakv (*yak-v. (originally intended to be "yet-another-key-value store")*) is a simple, in-memory, concurrency-safe key-value store for hobbyists.
