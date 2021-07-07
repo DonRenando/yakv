@@ -289,7 +289,11 @@ func GetHandler(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	// ResponseWriter takes byte as argument
-	rw.Write([]byte(value))
+	_, err = rw.Write([]byte(value))
+	if err != nil {
+		http.Error(rw, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
 // Handler function for PUT
@@ -522,7 +526,10 @@ func main() {
 	r := mux.NewRouter()
 	fmt.Println("yakv is initializing the transaction log! 🔨")
 
-	InitLog(logFilename)
+	err := InitLog(logFilename)
+	if err != nil {
+		_ = fmt.Errorf("Error occurred while initializing log: %w", err)
+	}
 
 	// yakv URLs are set to v0.
 	r.HandleFunc("/yakv/v0/put", PutHandler).Methods("PUT")

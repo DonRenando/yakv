@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"testing"
 )
@@ -44,7 +45,7 @@ func TestGet(t *testing.T) {
 	defer delete(store.m, key)
 
 	// Perform the Put operation.
-	val, err = Get(key)
+	_, err = Get(key)
 	if !errors.Is(err, ErrorNoSuchKey) {
 		t.Error("Unexpected error:", err)
 	}
@@ -128,7 +129,10 @@ func TestDelete(t *testing.T) {
 		t.Error("Key doesn't exist! Cannot delete non-existent key.")
 	}
 
-	Delete(key)
+	err := Delete(key)
+	if err != nil {
+		_ = fmt.Errorf("Error occurred while calling Delete(): %w", err)
+	}
 
 	// If it is found, then it failed to delete the key.
 	_, alreadyExists = store.m[key]
