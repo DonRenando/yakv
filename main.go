@@ -27,7 +27,7 @@ import (
 	"strings"
 	"sync"
 
-	mux "github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
 
 // Globally-available key-value store.
@@ -523,7 +523,6 @@ func main() {
 	fmt.Printf("yakv is starting on address: %s 🥳\n", addr)
 	fmt.Println("yakv is up and running! 🚀🥳")
 
-	r := mux.NewRouter()
 	fmt.Println("yakv is initializing the transaction log! 🔨")
 
 	err := InitLog(logFilename)
@@ -532,9 +531,10 @@ func main() {
 	}
 
 	// yakv URLs are set to v0.
-	r.HandleFunc("/yakv/v0/put", PutHandler).Methods("PUT")
-	r.HandleFunc("/yakv/v0/get", GetHandler).Methods("GET")
-	r.HandleFunc("/yakv/v0/delete", DeleteHandler).Methods("DELETE")
+	r := gin.Default()
+	r.GET("yakv/v0/get", gin.WrapF(GetHandler))
+	r.PUT("yakv/v0/put", gin.WrapF(PutHandler))
+	r.DELETE("yakv/v0/delete", gin.WrapF(DeleteHandler))
 
 	// Handle secure flag and serve.
 	if strings.TrimSpace(secure) == "tls" {
