@@ -4,6 +4,16 @@ Thank you for considering contributing to yakv. 😀
 
 yakv is an open source project and we love to receive contributions from our community! ❤
 
+<h2>Table of Contents:</h2>
+
+- [Contributing Guide](#contributing-guide)
+  - [How can I contribute?](#how-can-i-contribute)
+  - [Code of Conduct](#code-of-conduct)
+  - [How to make your first contribution!](#how-to-make-your-first-contribution)
+    - [Make a Pull Request](#make-a-pull-request)
+  - [Reporting Issues](#reporting-issues)
+  - [Benchmarking](#benchmarking)
+
 ## How can I contribute?
 
 **There are many ways to contribute:**
@@ -12,7 +22,7 @@ yakv is an open source project and we love to receive contributions from our com
 - Tutorials/Blog Posts
 - [Feature Requests](https://github.com/burntcarrot/yakv/discussions/categories/feature-requests)
 
-## Code of Conduct:
+## Code of Conduct
 
 Read the [Code of Conduct](https://github.com/burntcarrot/yakv/blob/main/CODE_OF_CONDUCT.md).
 
@@ -34,7 +44,7 @@ You can always look at **[open issues](https://github.com/burntcarrot/yakv/issue
 > - [First Timers Only](http://www.firsttimersonly.com/)
 
 
-### Make a Pull Request:
+### Make a Pull Request
 
 - Fork yakv.
 - Create a new branch for the fix. (for example, `fix-api`)
@@ -49,7 +59,7 @@ You can always look at **[open issues](https://github.com/burntcarrot/yakv/issue
 At this point, you're ready to make your first contribution to yakv! Feel free to ask for help, have fun! 🥳
 
 
-## Reporting Issues:
+## Reporting Issues
 
 When filing an issue, make sure to answer these questions:
 
@@ -59,3 +69,21 @@ When filing an issue, make sure to answer these questions:
 4. What did you expect to see?
 
 Attach the output of the error/bug enclosed in code blocks.
+
+## Benchmarking
+
+Benchmarks are done using [vegeta](https://github.com/tsenart/vegeta).
+
+If you are submitting a benchmark, please specify:
+
+- Device Specifications:
+    - Operating System
+    - Processor Architecture
+    - Processor
+    - RAM
+    - Other device specifications
+- Benchmark title
+- Method (for example, `GET`, `PUT`, etc.)
+- Rate (for example, `50 requests/seconds`)
+- Attack Report
+- Attack Plot

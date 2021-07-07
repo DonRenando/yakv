@@ -10,7 +10,18 @@ yakv provides persistence by appending transactions to a transaction log and res
 
 yakv is designed with simplicity as the main purpose and has *almost zero external dependencies*.
 
-## Installation:
+<h2>Table of Contents:</h2>
+
+- **[Installation](#installation)**
+- [Methods](#methods)
+- [Options](#options)
+- [Transaction Log](#transaction-log)
+- [Security](#security)
+- [Benchmarks](#benchmarks)
+- **[Contributing Guide](#contributing-guide)**
+- [Attributions](#attributions)
+
+## Installation
 
 Install using:
 
@@ -41,7 +52,7 @@ Install using:
     go build
     ```
 
-## Methods:
+## Methods
 
 yakv exposes a HTTP/HTTPS API and provides 3 methods to deal with data:
 
@@ -75,7 +86,7 @@ yakv exposes a HTTP/HTTPS API and provides 3 methods to deal with data:
 
 yakv currently accepts request bodies in the form of JSON.
 
-## Options:
+## Options
 
 Here are the list of options or the command line flags provided by yakv:
 
@@ -99,11 +110,11 @@ OPTIONS:
         Filename for transaction log.
 ```
 
-## Transaction Log:
+## Transaction Log
 
 All of the transactions are backed up in a transaction log, which are automatically loaded up by yakv on start-up.
 
-## Security:
+## Security
 
 yakv provides a TLS-encrypted HTTPS connection using the `-secure` flag.
 
@@ -129,7 +140,9 @@ docker run -p 8080:8080 yakv /bin/sh -c "/yakv -host 0.0.0.0 -secure tls"
     ./yakv -port 8080 -secure tls
     ```
 
-## Benchmarks:
+## Benchmarks
+
+Benchmarks are done using [vegeta](https://github.com/tsenart/vegeta).
 
 All of the benchmarks are performed under these device specifications:
 
@@ -146,7 +159,7 @@ System type:
 
 > **NOTE: rate is set manually. This does not denote the maximum number of requests yakv can handle.**
 
-### 5,000 PUT requests in 100 seconds *(rate = 50 requests/second)*:
+<h3>5,000 PUT requests in 100 seconds *(rate = 50 requests/second)*:<h3>
 
 *Available RAM while performing benchmark: `3.8 GB`*
 
@@ -163,6 +176,10 @@ Error Set:
 
 ![PUT-Benchmark](benchmarks/put-requests-100s.png)
 
-## Attributions:
+## Contributing Guide
+
+Read the contributing guide [here.](https://github.com/burntcarrot/yakv/CONTRIBUTING.md)
+
+## Attributions
 
 The yak vector is provided by [OpenClipart/FreeSVG](https://freesvg.org/vector-drawing-of-a-yak) under the [Public Domain](https://creativecommons.org/licenses/publicdomain/).
