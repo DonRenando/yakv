@@ -178,7 +178,7 @@ Error Set:
 
 ## Contributing Guide
 
-Read the contributing guide [here.](https://github.com/burntcarrot/yakv/CONTRIBUTING.md)
+Read the contributing guide [here.](https://github.com/burntcarrot/yakv/blob/main/CONTRIBUTING.md)
 
 ## Attributions
 
