@@ -1,7 +1,10 @@
 <div align="center">
     <img src = "yakv.png">
-    <br>
+    <br><br>
     <a href="http://makeapullrequest.com"><img src ="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square"></a>
+    <a href = "https://github.com/burntcarrot/yakv/actions?workflow=Tests"><img src = "https://github.com/burntcarrot/yakv/workflows/Tests/badge.svg"></a>
+    <a href="https://pkg.go.dev/github.com/burntcarrot/yakv"><img src="https://godoc.org/github.com/burntcarrot/yakv?status.svg" /></a>
+    <br><br>
 </div>
 
 yakv (*yak-v. (originally intended to be "yet-another-key-value store")*) is a simple, in-memory, concurrency-safe key-value store for hobbyists.
@@ -18,6 +21,7 @@ yakv is designed with simplicity as the main purpose and has *almost zero extern
 - [Transaction Log](#transaction-log)
 - [Security](#security)
 - [Benchmarks](#benchmarks)
+- [FAQ](#faq)
 - **[Contributing Guide](#contributing-guide)**
 - [Attributions](#attributions)
 
@@ -152,14 +156,11 @@ Intel(R) Core(TM) i5-8265U CPU @ 1.60GHz   1.80 GHz
 
 Installed RAM:
 8.00 GB (7.85 GB usable)
-
-System type:
-64-bit operating system, x64-based processor
 ```
 
 > **NOTE: rate is set manually. This does not denote the maximum number of requests yakv can handle.**
 
-<h3>5,000 PUT requests in 100 seconds *(rate = 50 requests/second)*:<h3>
+<h4>5,000 PUT requests in 100 seconds (rate = 50 requests/second):</h4>
 
 *Available RAM while performing benchmark: `3.8 GB`*
 
@@ -175,6 +176,12 @@ Error Set:
 ```
 
 ![PUT-Benchmark](benchmarks/put-requests-100s.png)
+
+## FAQ:
+
+#### Why a database-based tranasaction log isn't available?
+
+`yakv` was designed with simplicity as the main purpose, although this doesn't mean resistence to addition of new features, the addition of database-based transaction log is scheduled for future releases.
 
 ## Contributing Guide
 
