@@ -179,7 +179,7 @@ Error Set:
 
 ## FAQ:
 
-#### Why a database-based tranasaction log isn't available?
+#### Why a database-based transaction log isn't available?
 
 `yakv` was designed with simplicity as the main purpose, although this doesn't mean resistence to addition of new features, the addition of database-based transaction log is scheduled for future releases.
 
