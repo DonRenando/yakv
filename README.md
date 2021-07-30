@@ -1,9 +1,10 @@
 <div align="center">
-    <img src = "yakv.png">
+    <img src = "static/yakv.png">
     <br><br>
     <a href="http://makeapullrequest.com"><img src ="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square"></a>
     <a href = "https://github.com/burntcarrot/yakv/actions?workflow=Tests"><img src = "https://github.com/burntcarrot/yakv/workflows/Tests/badge.svg"></a>
     <a href="https://pkg.go.dev/github.com/burntcarrot/yakv"><img src="https://godoc.org/github.com/burntcarrot/yakv?status.svg" /></a>
+    <img src = "static/term-preview-yakv.svg">
     <br><br>
 </div>
 
