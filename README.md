@@ -139,11 +139,11 @@ docker run -p 8080:8080 yakv /bin/sh -c "/yakv -host 0.0.0.0 -secure tls"
 **Locally:**
 - From source code:
     ```
-    go run main.go -port 8080 -secure tls
+    go run main.go -port 8080 -secure
     ```
 - From binary:
     ```
-    ./yakv -port 8080 -secure tls
+    ./yakv -port 8080 -secure
     ```
 
 ## Benchmarks

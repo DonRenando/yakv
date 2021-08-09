@@ -501,7 +501,7 @@ func main() {
 	var logFilename string
 
 	// Flag values for TLS-based connection.
-	var secure string
+	var secure bool
 	var certFilename string
 	var keyFilename string
 
@@ -510,7 +510,7 @@ func main() {
 	flag.StringVar(&config.host, "host", "127.0.0.1", "Host Address.")
 
 	// default connections are not secured using TLS
-	flag.StringVar(&secure, "secure", "insecure", "TLS-secured connection.")
+	flag.BoolVar(&secure, "secure", false, "TLS-secured connection.")
 	flag.StringVar(&certFilename, "cert", "cert.pem", "Filename for certificate.")
 	flag.StringVar(&keyFilename, "key", "key.pem", "Filename for private key.")
 
@@ -537,7 +537,7 @@ func main() {
 	r.DELETE("yakv/v0/delete", gin.WrapF(DeleteHandler))
 
 	// Handle secure flag and serve.
-	if strings.TrimSpace(secure) == "tls" {
+	if secure {
 		fmt.Println("yakv is running in secure mode.... 🔒")
 		log.Fatal(http.ListenAndServeTLS(addr, certFilename, keyFilename, r))
 	} else {
