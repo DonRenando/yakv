@@ -43,10 +43,10 @@ var ftlReadFormat = "%d\t%d\t%q\t%q"
 // Initializing logger.
 var logger TransactionLogger
 
-// This error is raised when a key is not found in the store.
+// ErrorNoSuchKey is raised when a key is not found in the store.
 var ErrorNoSuchKey = errors.New("key doesn't exist")
 
-// The interface for a transaction logger.
+// TransactionLogger is the interface for a transaction logger.
 type TransactionLogger interface {
 	WriteDelete(key string)
 	WritePut(key, value string)
@@ -58,7 +58,7 @@ type TransactionLogger interface {
 	Log()
 }
 
-// Struct for the file-based transaction logger.
+// FileTransactionLogger is a struct for the file-based transaction logger.
 type FileTransactionLogger struct {
 	events chan<- Event // Write-only channel for sending events.
 	errors <-chan error // Read-only channel for receiving errors.
@@ -75,6 +75,7 @@ type Event struct {
 	Value     string    // The value assigned to the event.
 }
 
+// EventType denotes the type of event occurred.
 type EventType byte
 
 // Assigns a constant value for each event.
@@ -84,17 +85,17 @@ const (
 	EventPut    EventType = iota
 )
 
-// Struct for defining DELETE request body structure.
+// DeleteBody is a struct for defining DELETE request body structure.
 type DeleteBody struct {
 	Key string
 }
 
-// Struct for defining GET request body structure.
+// GetBody is a struct for defining GET request body structure.
 type GetBody struct {
 	Key string
 }
 
-// Struct for defining PUT request body structure.
+// PutBody is a struct for defining PUT request body structure.
 type PutBody struct {
 	Key   string
 	Value string
@@ -206,7 +207,7 @@ func DecodeJSONBody(w http.ResponseWriter, r *http.Request, dst interface{}) err
 	return nil
 }
 
-// Handler function for DELETE
+// DeleteHandler is a handler function for DELETE endpoint.
 func DeleteHandler(rw http.ResponseWriter, r *http.Request) {
 	var body DeleteBody
 
@@ -249,7 +250,7 @@ func DeleteHandler(rw http.ResponseWriter, r *http.Request) {
 	logger.WriteDelete(key)
 }
 
-// Handler function for GET.
+// GetHandler is a handler function for GET endpoint.
 func GetHandler(rw http.ResponseWriter, r *http.Request) {
 	var body GetBody
 
@@ -296,7 +297,7 @@ func GetHandler(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Handler function for PUT
+// PutHandler is a handler function for PUT endpoint.
 func PutHandler(rw http.ResponseWriter, r *http.Request) {
 	var body PutBody
 
@@ -341,18 +342,19 @@ func PutHandler(rw http.ResponseWriter, r *http.Request) {
 	rw.WriteHeader(http.StatusCreated)
 }
 
-// Sends events of type EventPut to the file-based transaction logger's events channel.
+// WritePut sends events of type EventPut to the file-based transaction logger's events channel.
 func (ftl *FileTransactionLogger) WritePut(key, value string) {
 	ftl.wg.Add(1)
 	ftl.events <- Event{EventType: EventPut, Key: key, Value: value}
 }
 
-// Sends events of type EventDelete to the file-based transaction logger's events channel.
+// WriteDelete sends events of type EventDelete to the file-based transaction logger's events channel.
 func (ftl *FileTransactionLogger) WriteDelete(key string) {
 	ftl.wg.Add(1)
 	ftl.events <- Event{EventType: EventDelete, Key: key}
 }
 
+// Close closes the events channel and the file descriptor for the transaction log.
 func (ftl *FileTransactionLogger) Close() error {
 	ftl.wg.Wait()
 
@@ -363,20 +365,22 @@ func (ftl *FileTransactionLogger) Close() error {
 	return ftl.file.Close()
 }
 
+// Wait blocks until the WaitGroup counter for FileTransactionLogger is zero.
 func (ftl *FileTransactionLogger) Wait() {
 	ftl.wg.Wait()
 }
 
-// Sends errors to the file-based transaction logger's errors channel
+// Err sends errors to the FileTransactionLogger's errors channel.
 func (ftl *FileTransactionLogger) Err() <-chan error {
 	return ftl.errors
 }
 
+// LastID returns the FileTransactionLogger's last used event ID.
 func (ftl *FileTransactionLogger) LastID() uint64 {
 	return ftl.lastID
 }
 
-// Logs transactions to the transaction log.
+// Log logs transactions to the transaction log.
 func (ftl *FileTransactionLogger) Log() {
 	// Buffered channel for events.
 	events := make(chan Event, 16)
@@ -405,7 +409,7 @@ func (ftl *FileTransactionLogger) Log() {
 	}()
 }
 
-// Reads all transactions from the transaction log.
+// ReadEvents reads all transactions from the transaction log.
 func (ftl *FileTransactionLogger) ReadEvents() (<-chan Event, <-chan error) {
 	scanner := bufio.NewScanner(ftl.file) // Scanner for transaction log
 	outEvent := make(chan Event)          // Unbuffered channel for events.
@@ -450,7 +454,7 @@ func (ftl *FileTransactionLogger) ReadEvents() (<-chan Event, <-chan error) {
 	return outEvent, outError
 }
 
-// Creates a new file-based transaction logger.
+// NewFileTransactionLogger creates a new file-based transaction logger.
 func NewFileTransactionLogger(filename string) (TransactionLogger, error) {
 	file, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0755)
 
@@ -461,7 +465,7 @@ func NewFileTransactionLogger(filename string) (TransactionLogger, error) {
 	return &FileTransactionLogger{file: file, wg: &sync.WaitGroup{}}, nil
 }
 
-// Initialize the transaction log and mutates the state of the key-value store by replaying previously stored transactions.
+// InitLog initializes the transaction log and mutates the state of the key-value store by replaying previously stored transactions.
 func InitLog(filename string) error {
 	var err error
 
