@@ -4,6 +4,7 @@
     <a href="http://makeapullrequest.com"><img src ="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square"></a>
     <a href = "https://github.com/burntcarrot/yakv/actions?workflow=Tests"><img src = "https://github.com/burntcarrot/yakv/workflows/Tests/badge.svg"></a>
     <a href="https://pkg.go.dev/github.com/burntcarrot/yakv"><img src="https://godoc.org/github.com/burntcarrot/yakv?status.svg" /></a>
+    <a href = "https://goreportcard.com/report/github.com/burntcarrot/yakv"><img src="https://goreportcard.com/badge/github.com/burntcarrot/yakv" /></a>
     <br><br>
     <img src = "static/term-preview-yakv.svg">
     <br><br>
