@@ -180,6 +180,30 @@ Error Set:
 
 ![PUT-Benchmark](benchmarks/put-requests-100s.png)
 
+
+
+### GET Benchmark:
+#### Device Specifications:
+- Device Specifications:
+    - Windows 10 Home 10.0.19043
+    - x64
+    - AMD Ryzen 7 4700U with Radeon Graphics, 2000 Mhz, 8 Core(s)
+    - 16.0 GB
+- 699,975 GET requests in 100 seconds (rate = 7000 requests/second)
+- Available RAM while performing benchmark: 6.7 GB
+
+Vegeta Report
+```
+Requests      [total, rate, throughput]  699975, 7000.66, 7000.45
+Duration      [total, attack, wait]      1m39.9899922s, 1m39.9869913s, 3.0009ms
+Latencies     [mean, 50, 95, 99, max]    5.197315ms, 4.428696ms, 12.439165ms, 18.171076ms, 43.2018ms
+Bytes In      [total, mean]              8399700, 12.00
+Bytes Out     [total, mean]              10499625, 15.00
+Success       [ratio]                    100.00%
+Status Codes  [code:count]               200:699975
+Error Set:
+```
+![GET-Benchmark](benchmarks/get-requests-100s.png)
 ## FAQ:
 
 #### Why a database-based transaction log isn't available?
