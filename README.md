@@ -182,8 +182,8 @@ Error Set:
 
 
 
-#### GET Benchmark:
-### Device Specifications:
+### GET Benchmark:
+#### Device Specifications:
 - Device Specifications:
     - Windows 10 Home 10.0.19043
     - x64
