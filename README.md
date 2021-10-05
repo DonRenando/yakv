@@ -151,37 +151,7 @@ docker run -p 8080:8080 yakv /bin/sh -c "/yakv -host 0.0.0.0 -secure tls"
 
 Benchmarks are done using [vegeta](https://github.com/tsenart/vegeta).
 
-All of the benchmarks are performed under these device specifications:
-
-```
-Processor:
-Intel(R) Core(TM) i5-8265U CPU @ 1.60GHz   1.80 GHz
-
-Installed RAM:
-8.00 GB (7.85 GB usable)
-```
-
 > **NOTE: rate is set manually. This does not denote the maximum number of requests yakv can handle.**
-
-<h4>5,000 PUT requests in 100 seconds (rate = 50 requests/second):</h4>
-
-*Available RAM while performing benchmark: `3.8 GB`*
-
-```
-Requests      [total, rate, throughput]         5000, 50.01, 50.01
-Duration      [total, attack, wait]             1m40s, 1m40s, 1.13ms
-Latencies     [min, mean, 50, 90, 95, 99, max]  467.4µs, 2.687ms, 2.949ms, 3.579ms, 3.652ms, 3.723ms, 14.932ms
-Bytes In      [total, mean]                     0, 0.00
-Bytes Out     [total, mean]                     185000, 37.00
-Success       [ratio]                           100.00%
-Status Codes  [code:count]                      201:5000
-Error Set:
-```
-
-![PUT-Benchmark](benchmarks/put-requests-100s.png)
-
-
-
 ### GET Benchmark:
 #### Device Specifications:
 - Device Specifications:
@@ -212,7 +182,7 @@ Error Set:
     - x64
     - AMD Ryzen 7 4700U with Radeon Graphics, 2000 Mhz, 8 Core(s)
     - 16.0 GB
-- 800000 PUT requests in 100 seconds (rate = 8000 requests/second)
+- 800,000 PUT requests in 100 seconds (rate = 8000 requests/second)
 - Available RAM while performing benchmark: 7.3 GB
 
 Vegeta Report
