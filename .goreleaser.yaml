@@ -1,6 +1,6 @@
 before:
   hooks:
-    - go mod download
+    - go mod tidy
 builds:
   - id: yakv
     main: .
@@ -13,10 +13,13 @@ builds:
     - windows
     goarch:
     - amd64
-    - arm64
+    - 386
     ignore:
-    - goos: windows
-      goarch: arm64
+    - goos: darwin
+      goarch: 386
+    - goos: linux
+      goarch: 386
 archives:
 - name_template: "{{ .ProjectName }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
   wrap_in_directory: false
+  format: binary
