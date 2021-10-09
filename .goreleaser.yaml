@@ -1,0 +1,22 @@
+before:
+  hooks:
+    - go mod download
+builds:
+  - id: yakv
+    main: .
+    binary: yakv
+    env:
+    - CGO_ENABLED=0
+    goos:
+    - linux
+    - darwin
+    - windows
+    goarch:
+    - amd64
+    - arm64
+    ignore:
+    - goos: windows
+      goarch: arm64
+archives:
+- name_template: "{{ .ProjectName }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+  wrap_in_directory: false
